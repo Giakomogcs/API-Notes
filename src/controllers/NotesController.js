@@ -57,8 +57,9 @@ class NotesController{
   }
 
   async index(request,response){
-    const {tags,title} = request.query
-    const user_id = request.user.id
+    const {tags,title} = request.query;
+    
+    const user_id = request.user.id;
     let notes
 
     if(tags){
