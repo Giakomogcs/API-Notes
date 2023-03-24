@@ -11,8 +11,8 @@ const routes = require("./routes");
 migrationsRun();
 
 const app = express();
-app.use(cors)
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 app.use("/files", express.static(uploadConfig.UPLOADS_FOLDER))
 app.use(routes);
