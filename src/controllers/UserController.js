@@ -3,28 +3,17 @@ const AppError = require("../utils/AppError")
 
 const sqliteConnection = require("../database/sqlite")
 const UserRepository = require("../repositories/UserRepository")
+const UserCreateService = require("../services/UserCreateService")
 
 class UserController {
   async create(request, response) {
     const{name,email,password} = request.body;
 
-    const userRepository = new UserRepository()
+    const userRepository = new UserRepository
+    const userCreateService = new UserCreateService(userRepository)
+    await userCreateService.execute({name,email,password})
 
-    const checkUserExist = await userRepository.findByEmail(email)
-
-    if(checkUserExist){
-      throw new AppError("Este e-mail já está em uso.")
-    }
-
-    if(!name) {
-      throw new AppError("Nome é obrigatório!")
-    }
-
-    const hashedPassword = await hash(password, 8)
-
-    await userRepository.create({name, email, password: hashedPassword})
-  
-    return response.status(201).json({name, email, hashedPassword});
+    return response.status(201).json({name, email});
   }
 
   async update(request,response) {
